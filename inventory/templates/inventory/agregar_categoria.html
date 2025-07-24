@@ -1,0 +1,10 @@
+{% extends "inventory/base.html" %}
+{% block title %}Agregar Categoría{% endblock %}
+{% block content %}
+<h2>Agregar Categoría</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+{% endblock %}

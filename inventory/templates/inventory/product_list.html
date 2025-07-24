@@ -1,0 +1,67 @@
+{% extends "inventory/base.html" %}
+{% block title %}Lista de Productos{% endblock %}
+{% block content %}
+<h2>Productos</h2>
+
+<!-- BOTÓN AÑADIR INFORMACION -->
+<div class="mb-3 d-flex gap-2">
+    <a href="{% url 'agregar_producto' %}" class="btn btn-primary">➕ Añadir Producto</a>
+    <a href="{% url 'agregar_categoria' %}" class="btn btn-outline-primary">➕ Añadir Categoría</a>
+    <a href="{% url 'agregar_proveedor' %}" class="btn btn-outline-primary">➕ Añadir Proveedor</a>
+</div>
+
+<!-- BOTONES ADICIONALES -->
+<div class="mb-3 d-flex gap-2">
+    <a href="{% url 'import_csv' %}" class="btn btn-warning">📁 Importación masiva por CSV</a>
+    {% if products|length > 1 %}
+        <a href="{% url 'movements_chart' %}" class="btn btn-info">📊 Gráficos de movimientos</a>
+    {% endif %}
+</div>
+
+<form method="get" class="row g-3">
+    <div class="col-md-4">
+        <select name="supplier" class="form-select">
+            <option value="">-- Filtrar por proveedor --</option>
+            {% for s in suppliers %}
+                <option value="{{ s.id }}" {% if s.id|stringformat:"s" == request.GET.supplier %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select name="category" class="form-select">
+            <option value="">-- Filtrar por categoría --</option>
+            {% for c in categories %}
+                <option value="{{ c.id }}" {% if c.id|stringformat:"s" == request.GET.category %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button class="btn btn-success" type="submit">Filtrar</button>
+    </div>
+</form>
+
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Proveedor</th>
+            <th>Stock</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.category.name }}</td>
+            <td>{{ p.supplier.name }}</td>
+            <td>{{ p.stock }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No hay productos que coincidan con los filtros.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

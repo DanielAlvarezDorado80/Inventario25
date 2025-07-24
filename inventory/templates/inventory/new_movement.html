@@ -1,0 +1,12 @@
+{% extends "inventory/base.html" %}
+{% block title %}Nuevo Movimiento{% endblock %}
+{% block content %}
+<h2>Registrar Entrada/Salida</h2>
+
+<form method="post" class="mt-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary ms-2">Cancelar</a>
+</form>
+{% endblock %}
